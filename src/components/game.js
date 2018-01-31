@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../assets/css/game.css'
 
 class Game extends Component{
     constructor(props){
@@ -6,6 +7,8 @@ class Game extends Component{
         this.state={
             randomNumber: 0,
             userNumber: '',
+            message: '',
+            shake: false
         }
     }
     generateRandomNumber(){
@@ -22,8 +25,12 @@ class Game extends Component{
 
     makeGuess(e){
         e.preventDefault();
-        console.log('UserNum: ', this.state.userNumber);
-        
+        const { userNumber, randomNumber } = this.state;
+        const response= userNumber==randomNumber? 'You Won!' : userNumber<randomNumber ? 'Number is Higher' : 'Number is Lower';
+        this.setState( {message: response, userNumber:'', shake:true} )
+        setTimeout( ()=>{
+            this.setState({shake:false})
+        }, 750);
     }
 
     render(){
@@ -32,7 +39,7 @@ class Game extends Component{
         const btnStyle =  {
             margin: '10px 50px'
         }
-        const { randomNumber, userNumber } = this.state;
+        const { randomNumber, userNumber, message, shake } = this.state;
 
         return (
             <div>
@@ -50,7 +57,9 @@ class Game extends Component{
 
                         </div>
                     </form>
+                    
                 </div>
+                <h3 className={`center-align ${shake ? 'shake' : ''}`}>{message}</h3>
                 
             </div>
         
